@@ -86,4 +86,96 @@ public:
         existing_puzzle.clear();
         cnt_valid = 0;
     }
+    
+    void generate() {
+        if (existing_puzzle[curr])
+            return;
+        existing_puzzle[curr] = true;
+        valid_puzzles.push_back(curr);
+        cnt_valid++;
+        if (cnt_valid > 1000 or cnt_valid > count_valid_puzzle) // generate up to 1000
+            return;
+        if (pos < n * (n - 1)) { // move down
+            swap(curr[pos], curr[pos + n]);
+            pos += n;
+            generate();
+            pos -= n;
+            swap(curr[pos], curr[pos + n]);
+        }
+        if (pos % n != n - 1) { // move right
+            swap(curr[pos], curr[pos + 1]);
+            pos += 1;
+            generate();
+            pos -= 1;
+            swap(curr[pos], curr[pos + 1]);
+        }
+        if (pos % n != 0) { // move left
+            swap(curr[pos], curr[pos - 1]);
+            pos -= 1;
+            generate();
+            pos += 1;
+            swap(curr[pos], curr[pos - 1]);
+        }
+        if (pos >= n) { // move up
+            swap(curr[pos], curr[pos - n]);
+            pos -= n;
+            generate();
+            pos += n;
+            swap(curr[pos], curr[pos - n]);
+        }
+    }
+
+    vector<int> get_solution() {
+        vector<int> grid;
+        for (int i = 0; i < n * n; ++i)
+            grid.push_back(i);
+        return grid;
+    }
+
+    vector<int> get_random_puzzle() {
+        if (valid_puzzles.size() != 0) { // not generated
+            return valid_puzzles[rand() % valid_puzzles.size()];
+        } else {
+            valid_puzzles.clear();
+            existing_puzzle.clear();
+            vector<int> sol = get_solution();
+            curr = sol;
+            generate();
+            return valid_puzzles[rand() % valid_puzzles.size()];
+        }
+    }
+
+    void print_puzzle(vector<int> &grid) {
+        int sz = int(sqrt(grid.size()));
+        for (int i = 0; i < grid.size(); ++i) {
+            if (i % sz == 0)
+                cout << "\n| ";
+            if (grid[i] == 0)
+                cout << "  | ";
+            else
+                cout << grid[i] << " | ";
+        }
+        cout << '\n';
+    }
+
+
+    bool correct(vector<int> &grid) {
+        int empty_cell = (int) (find(grid.begin(), grid.end(), 0) - grid.begin());
+        if (empty_cell == 0) {
+            for (int i = 0; i < grid.size(); i++) {
+                if (grid[i] != i)
+                    return false;
+            }
+            return true;
+        } else if (empty_cell == grid.size() - 1) {
+            for (int i = 0; i < grid.size() - 1; i++) {
+                if (grid[i] != i + 1)
+                    return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 };
