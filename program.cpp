@@ -177,5 +177,36 @@ public:
             return false;
         }
     }
+    
+    void play() {
+        vector<int> grid = get_random_puzzle();
+        while (correct(grid))
+            grid = get_random_puzzle();
+        while (true) {
+            print_puzzle(grid);
+            vector<char> available_actions = possible_moves(grid);
+            char selected_action = select_action(available_actions);
+            move(grid, selected_action);
+            if (correct(grid)) {
+                print_puzzle(grid);
+                cout << "Winner Winner Chicken Dinner :)\n";
+                break;
+            }
+        }
+    }
 
+    void print_valid() {
+        cout << "Number of valid puzzles of length " << n << " * " << n << " is: "
+             << count_valid_puzzle << '\n';
+        if (count_valid_puzzle > valid_puzzles.size()) {
+            cout << "Only a piece of valid puzzles are printed\n";
+        }
+        for (vector<int> v: valid_puzzles) {
+            cout << "[";
+            for (int i = 0; i < v.size() - 1; ++i) {
+                cout << v[i] << ", ";
+            }
+            cout << v[v.size() - 1] << "]\n";
+        }
+    }
 };
