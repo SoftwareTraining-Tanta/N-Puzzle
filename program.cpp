@@ -1,7 +1,6 @@
 //      بِسْمِ اللَّـهِ الرَّحْمَـٰنِ الرَّحِيم
 
 #include <bits/stdc++.h>
-
 using namespace std;
 
 class puzzle {
