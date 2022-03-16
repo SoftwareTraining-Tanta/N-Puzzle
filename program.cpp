@@ -210,3 +210,10 @@ public:
         }
     }
 };
+
+int main() {
+    freopen("output.txt", "w", stdout);
+    puzzle x(2);
+    x.generate();
+    x.print_valid();
+}
