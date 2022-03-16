@@ -215,4 +215,5 @@ int main() {
     puzzle x(2);
     x.generate();
     x.print_valid();
+    x.play();
 }
